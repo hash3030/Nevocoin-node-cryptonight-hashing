@@ -25,51 +25,25 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-//Cache size in KiB. Must be a power of 2.
-#define RANDOMX_ARGON_MEMORY       262144
 
-//Number of Argon2d iterations for Cache initialization.
-#define RANDOMX_ARGON_ITERATIONS   2
 
-//Number of parallel lanes for Cache initialization.
-#define RANDOMX_ARGON_LANES        1
+#pragma once
 
-//Argon2d salt
-#define RANDOMX_ARGON_SALT         "RandomNEVO"
+// Increase it if some configs use more cache accesses
+#define RANDOMX_CACHE_MAX_ACCESSES 8
 
-//Number of random Cache accesses per Dataset item. Minimum is 2.
-#define RANDOMX_CACHE_ACCESSES     8
+// Increase it if some configs use larger superscalar latency
+#define RANDOMX_SUPERSCALAR_MAX_LATENCY 256
 
-//Target latency for SuperscalarHash (in cycles of the reference CPU).
-#define RANDOMX_SUPERSCALAR_LATENCY   170
+// Increase it if some configs use larger cache
+#define RANDOMX_CACHE_MAX_SIZE  33554368
 
-//Dataset base size in bytes. Must be a power of 2.
-#define RANDOMX_DATASET_BASE_SIZE  1073741824
+// Increase it if some configs use larger dataset
+#define RANDOMX_DATASET_MAX_SIZE  2181038080
 
-//Dataset extra size. Must be divisible by 64.
-#define RANDOMX_DATASET_EXTRA_SIZE 33554368
+// Increase it if some configs use larger programs
+#define RANDOMX_PROGRAM_MAX_SIZE         256
 
-//Number of instructions in a RandomX program. Must be divisible by 8.
-#define RANDOMX_PROGRAM_SIZE       256
-
-//Number of iterations during VM execution.
-#define RANDOMX_PROGRAM_ITERATIONS 2048
-
-//Number of chained VM executions per hash.
-#define RANDOMX_PROGRAM_COUNT      4
-
-//Scratchpad L3 size in bytes. Must be a power of 2.
-#define RANDOMX_SCRATCHPAD_L3      1048576
-
-//Scratchpad L2 size in bytes. Must be a power of two and less than or equal to RANDOMX_SCRATCHPAD_L3.
-#define RANDOMX_SCRATCHPAD_L2      262144
-
-//Scratchpad L1 size in bytes. Must be a power of two (minimum 64) and less than or equal to RANDOMX_SCRATCHPAD_L2.
-#define RANDOMX_SCRATCHPAD_L1      16384
-
-//Jump condition mask size in bits.
-#define RANDOMX_JUMP_BITS          8
-
-//Jump condition mask offset in bits. The sum of RANDOMX_JUMP_BITS and RANDOMX_JUMP_OFFSET must not exceed 16.
-#define RANDOMX_JUMP_OFFSET        8
+// Increase it if some configs use larger scratchpad
+#define RANDOMX_SCRATCHPAD_L3_MAX_SIZE      1048576
 
