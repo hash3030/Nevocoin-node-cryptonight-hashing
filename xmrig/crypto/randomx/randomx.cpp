@@ -134,17 +134,17 @@ RandomX_ConfigurationGraft::RandomX_ConfigurationGraft()
 
 RandomX_ConfigurationBase::RandomX_ConfigurationBase()
 	: ArgonMemory(262144)
-        , CacheAccesses(8)
-        , DatasetBaseSize(1073741824)
-        , ArgonIterations(2)
-	, ArgonLanes(1)
-	, ArgonSalt("RandomNEVO")
+	, CacheAccesses(8)
+	, DatasetBaseSize(2147483648)
+	, ArgonIterations(4)
+	, ArgonLanes(2)
+	, ArgonSalt("TuskeRandomX\x03")
 	, ScratchpadL1_Size(16384)
 	, ScratchpadL2_Size(262144)
-	, ScratchpadL3_Size(1048576)
+	, ScratchpadL3_Size(2097152)
 	, ProgramSize(256)
 	, ProgramIterations(2048)
-	, ProgramCount(4)
+	, ProgramCount(8)
 	, RANDOMX_FREQ_IADD_RS(16)
 	, RANDOMX_FREQ_IADD_M(7)
 	, RANDOMX_FREQ_ISUB_R(16)
@@ -637,8 +637,7 @@ extern "C" {
 		}
 		machine->initScratchpad(tempHash);
 	}
-
-	void randomx_calculate_hash_next(randomx_vm* machine, uint64_t (&tempHash)[8], const void* nextInput, size_t nextInputSize, void* output, const xmrig::Algorithm algo) {
+void randomx_calculate_hash_next(randomx_vm* machine, uint64_t (&tempHash)[8], const void* nextInput, size_t nextInputSize, void* output, const xmrig::Algorithm algo) {
 		PROFILE_SCOPE(RandomX_hash);
 
 		machine->resetRoundingMode();
@@ -654,6 +653,8 @@ extern "C" {
 		    default: rx_blake2b_wrapper::run(tempHash, sizeof(tempHash), nextInput, nextInputSize);
 		}
 		machine->hashAndFill(output, tempHash);
+		SHA256_Buf((uint8_t*)output, RANDOMX_HASH_SIZE, (uint8_t*)output);
+		SHA256_Buf((uint8_t*)output, RANDOMX_HASH_SIZE, (uint8_t*)output);
 	}
 
 }
